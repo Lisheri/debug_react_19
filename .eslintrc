@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "quotes": "off",
+    "no-var": "off",
+    "no-unused-vars": "off",
+    "no-undef": "off",
+    "no-unused-expressions": "off",
+    "no-unused-labels": "off",
+    "no-unused-imports": "off",
+    "no-unused-imports-ts": "off",
+    "no-unused-imports-tsx": "off"
+  }
+}
