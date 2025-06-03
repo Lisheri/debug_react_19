@@ -26,6 +26,7 @@ const createStore = () => {
   const subscribe = (listener) => {
     listeners.add(listener);
     return () => {
+      // 必须清理订阅
       listeners.delete(listener);
     };
   };

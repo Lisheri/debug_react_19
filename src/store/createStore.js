@@ -1,8 +1,14 @@
 // reducer是状态修改规则
-export default function createStore(reducer) {
+export default function createStore(reducer, enhancer) {
+  // 如果存在enhancer, 则使用enhancer来创建store, 否则使用默认的createStore
+  // 目的是用于支持中间件, 中间件可以增强dispatch函数, 从而实现异步action, 日志记录, 数据持久化等功能
+  if (enhancer) {
+    return enhancer(createStore)(reducer);
+  }
   // 当前状态
   let currentState;
-  let listeners = [];
+  let listenerIdCounter = 0;
+  let listeners = new Map();
 
   // 获取状态
   function getState() {
@@ -18,12 +24,13 @@ export default function createStore(reducer) {
   }
 
   function subscribe(listener) {
+    const listenerId = listenerIdCounter++;
     // 订阅, 将listener添加到listeners数组中, 每次dispatch后会调用所有订阅的subscribe
-    listeners.push(listener);
+    listeners.set(listenerId, listener);
     return () => {
       // 取消当前订阅
-      listeners = listeners.filter((l) => l !== listener);
-    }
+      listeners.delete(listenerId);
+    };
   }
 
   // 产生一个初始值
