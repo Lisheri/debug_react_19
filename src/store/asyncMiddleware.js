@@ -13,6 +13,11 @@ export function asyncMiddleware(createStore) {
     
     // 增强 dispatch 函数
     function enhancedDispatch(action) {
+      // 处理null或undefined action
+      if (!action) {
+        return originalDispatch({ type: '@@NOOP' });
+      }
+      
       // redux-thunk: 如果 action 是函数，则执行它并传入 dispatch 和 getState
       if (typeof action === 'function') {
         return action(enhancedDispatch, store.getState);
